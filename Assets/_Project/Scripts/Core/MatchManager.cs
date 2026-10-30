@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using LegendsOfTheArena.Characters;
 
 namespace LegendsOfTheArena.Core
@@ -23,14 +22,11 @@ namespace LegendsOfTheArena.Core
 
         private void UnbindEvents()
         {
-            UnbindEvents();
-        }
-
-        private void OnDisable()
-        {
             if (fighterOne != null) fighterOne.KnockedOut -= OnKnockout;
             if (fighterTwo != null) fighterTwo.KnockedOut -= OnKnockout;
         }
+
+        private void OnDisable() => UnbindEvents();
 
         private void OnKnockout(FighterHealth defeated)
         {
