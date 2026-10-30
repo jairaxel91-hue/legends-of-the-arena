@@ -71,25 +71,19 @@ namespace LegendsOfTheArena.Editor
             FighterHealth health = root.AddComponent<FighterHealth>();
             FighterCombat combat = root.AddComponent<FighterCombat>();
 
-            var controllerType = typeof(FighterController);
-            controllerType.GetField("playerTwo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(controller, playerTwo);
-            typeof(FighterCombat).GetField("playerTwo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(combat, playerTwo);
+            controller.ConfigurePlayerTwo(playerTwo);
+            combat.ConfigurePlayerTwo(playerTwo);
 
             GameObject check = new GameObject("GroundCheck");
             check.transform.SetParent(root.transform);
             check.transform.localPosition = new Vector3(0f, -0.94f, 0f);
-            typeof(FighterController).GetField("groundCheck", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(controller, check.transform);
+            controller.SetGroundCheck(check.transform);
 
             GameObject hit = new GameObject("HitOrigin");
             hit.transform.SetParent(root.transform);
             hit.transform.localPosition = new Vector3(0.85f, 0.15f, 0f);
-            typeof(FighterCombat).GetField("hitOrigin", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(combat, hit.transform);
-            typeof(FighterCombat).GetField("fighterMask", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(combat, (LayerMask)(1 << root.layer));
+            combat.SetHitOrigin(hit.transform);
+            combat.SetFighterMask(1 << root.layer);
             return root;
         }
 
