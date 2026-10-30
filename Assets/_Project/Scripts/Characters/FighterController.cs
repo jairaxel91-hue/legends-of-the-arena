@@ -33,6 +33,13 @@ namespace LegendsOfTheArena.Characters
 
         private void Awake()
         {
+            if (playerTwo)
+            {
+                leftKey = KeyCode.LeftArrow;
+                rightKey = KeyCode.RightArrow;
+                jumpKey = KeyCode.UpArrow;
+                crouchKey = KeyCode.DownArrow;
+            }
             body = GetComponent<Rigidbody2D>();
             bodyCollider = GetComponent<Collider2D>();
             body.freezeRotation = true;
@@ -59,7 +66,8 @@ namespace LegendsOfTheArena.Characters
                 grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundMask) != null;
             else
                 grounded = Mathf.Abs(body.velocity.y) < 0.02f &&
-                           bodyCollider.bounds.min.y <= transform.position.y - 0.2f;
+                           Physics2D.Raycast(bodyCollider.bounds.center, Vector2.down,
+                               bodyCollider.bounds.extents.y + 0.08f, groundMask).collider != null;
 
             float targetSpeed = controlsLocked || IsCrouching ? 0f : horizontal * moveSpeed;
             body.velocity = new Vector2(targetSpeed, body.velocity.y);
