@@ -40,7 +40,7 @@ A 2D fighting game built with Unity. The project is structured as a real Unity p
 | Heavy attack | K | NumPad 2 |
 | Block | L | NumPad 3 |
 
-The input layer is intentionally isolated so controls can later be rebound and replaced with gamepad support.
+Player 2 movement uses the arrow keys; its combat uses the numeric keypad. Player 2 combat keys can be configured on the FighterCombat component. The input layer is intentionally isolated so controls can later be rebound and replaced with gamepad support.
 
 ## Visual direction
 
