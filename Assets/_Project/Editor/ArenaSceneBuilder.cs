@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -65,6 +66,7 @@ namespace LegendsOfTheArena.Editor
 
             SpriteRenderer renderer = root.AddComponent<SpriteRenderer>();
             renderer.sprite = CreateTemporarySprite(color);
+            renderer.color = color;
             renderer.sortingOrder = 5;
 
             FighterController controller = root.AddComponent<FighterController>();
@@ -95,8 +97,8 @@ namespace LegendsOfTheArena.Editor
             collider.size = size;
             SpriteRenderer sr = obj.AddComponent<SpriteRenderer>();
             sr.sprite = CreateTemporarySprite(color);
-            sr.drawMode = SpriteDrawMode.Sliced;
-            sr.size = size;
+            sr.color = color;
+            sr.transform.localScale = new Vector3(size.x, size.y, 1f);
             sr.sortingOrder = 1;
             return obj;
         }
@@ -107,18 +109,39 @@ namespace LegendsOfTheArena.Editor
             bg.transform.position = new Vector3(0f, 1.5f, 2f);
             SpriteRenderer sr = bg.AddComponent<SpriteRenderer>();
             sr.sprite = CreateTemporarySprite(new Color(0.055f, 0.07f, 0.11f));
+            sr.color = new Color(0.055f, 0.07f, 0.11f);
             sr.transform.localScale = new Vector3(24f, 11f, 1f);
             sr.sortingOrder = -10;
         }
 
         private static Sprite CreateTemporarySprite(Color color)
         {
-            Texture2D texture = new Texture2D(32, 32, TextureFormat.RGBA32, false);
-            Color[] pixels = new Color[32 * 32];
-            for (int i = 0; i < pixels.Length; i++) pixels[i] = color;
-            texture.SetPixels(pixels);
-            texture.Apply();
-            return Sprite.Create(texture, new Rect(0, 0, 32, 32), new Vector2(0.5f, 0.5f), 32f);
+            const string generatedFolder = "Assets/_Project/Generated";
+            if (!AssetDatabase.IsValidFolder(generatedFolder))
+                AssetDatabase.CreateFolder("Assets/_Project", "Generated");
+
+            string hex = ColorUtility.ToHtmlStringRGBA(color);
+            string path = generatedFolder + "/Blockout_" + hex + ".png";
+            if (!File.Exists(path))
+            {
+                Texture2D texture = new Texture2D(32, 32, TextureFormat.RGBA32, false);
+                Color[] pixels = new Color[32 * 32];
+                for (int i = 0; i < pixels.Length; i++) pixels[i] = Color.white;
+                texture.SetPixels(pixels);
+                texture.Apply();
+                File.WriteAllBytes(path, texture.EncodeToPNG());
+                Object.DestroyImmediate(texture);
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+                TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+                if (importer != null)
+                {
+                    importer.textureType = TextureImporterType.Sprite;
+                    importer.spritePixelsPerUnit = 32f;
+                    importer.filterMode = FilterMode.Bilinear;
+                    importer.SaveAndReimport();
+                }
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
     }
 }
