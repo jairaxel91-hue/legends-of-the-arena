@@ -10,6 +10,7 @@ namespace LegendsOfTheArena.Characters
         public int MaxHealth => maxHealth;
         public bool IsKnockedOut => CurrentHealth <= 0;
         public event Action<int, int> HealthChanged;
+        public event Action<int> Damaged;
         public event Action<FighterHealth> KnockedOut;
 
         private void Awake()
@@ -22,6 +23,7 @@ namespace LegendsOfTheArena.Characters
         {
             if (amount <= 0 || IsKnockedOut) return;
             CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
+            Damaged?.Invoke(amount);
             HealthChanged?.Invoke(CurrentHealth, maxHealth);
             if (IsKnockedOut) KnockedOut?.Invoke(this);
         }
