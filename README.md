@@ -4,7 +4,7 @@ A 2D fighting game built with Unity. The project is structured as a real Unity p
 
 ## Project status
 
-**Foundation / vertical-slice setup.** This repository currently contains the Unity project configuration and gameplay systems. Character illustrations, arena artwork, animation clips, audio, and final UI assets are production assets that still need to be imported and integrated.
+**Playable prototype foundation in progress.** The repository contains Unity project configuration, fighter movement/combat systems, hit feedback, match flow, and an Editor menu command that builds a temporary test arena. The generated arena is a functional blockout, not final art. Character illustrations, arena artwork, animation clips, audio, and final UI assets still need to be created and integrated.
 
 ## Requirements
 
@@ -17,7 +17,7 @@ A 2D fighting game built with Unity. The project is structured as a real Unity p
 1. Clone or download this repository.
 2. In Unity Hub, choose **Add > Add project from disk** and select the repository folder.
 3. Open with Unity 6.
-4. Open the scene you create under `Assets/_Project/Scenes` (the first playable scene is planned as `Arena.unity`).
+4. In the Unity menu, choose **Legends of the Arena > Create Prototype Arena**. This generates `Assets/_Project/Scenes/ArenaPrototype.unity` and persistent temporary sprites. Open that scene to test the first local two-player prototype.
 
 ## Current architecture
 
