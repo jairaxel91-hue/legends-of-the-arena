@@ -73,8 +73,7 @@ namespace LegendsOfTheArena.Characters
             body.velocity = new Vector2(targetSpeed, body.velocity.y);
         }
 
-        public void SetControlsLocked(bool locked)
-        {
+        public void ConfigurePlayerTwo(bool enabled)\n        {\n            playerTwo = enabled;\n            if (!enabled) return;\n            leftKey = KeyCode.LeftArrow;\n            rightKey = KeyCode.RightArrow;\n            jumpKey = KeyCode.UpArrow;\n            crouchKey = KeyCode.DownArrow;\n        }\n\n        public void SetGroundCheck(Transform check) => groundCheck = check;\n\n        public void SetControlsLocked(bool locked)\n        {
             controlsLocked = locked;
             if (locked && body != null)
                 body.velocity = new Vector2(0f, body.velocity.y);
