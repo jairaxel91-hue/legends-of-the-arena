@@ -20,6 +20,7 @@ namespace LegendsOfTheArena.Combat
         [SerializeField] private KeyCode lightKey = KeyCode.J;
         [SerializeField] private KeyCode heavyKey = KeyCode.K;
         [SerializeField] private KeyCode blockKey = KeyCode.L;
+        [SerializeField] private bool playerTwo;
 
         private FighterController controller;
         private bool recovering;
@@ -27,7 +28,16 @@ namespace LegendsOfTheArena.Combat
         public bool IsBlocking { get; private set; }
         public bool IsAttacking { get; private set; }
 
-        private void Awake() => controller = GetComponent<FighterController>();
+        private void Awake()
+        {
+            controller = GetComponent<FighterController>();
+            if (playerTwo)
+            {
+                lightKey = KeyCode.Keypad1;
+                heavyKey = KeyCode.Keypad2;
+                blockKey = KeyCode.Keypad3;
+            }
+        }
 
         private void Update()
         {
@@ -46,7 +56,7 @@ namespace LegendsOfTheArena.Combat
             yield return new WaitForSeconds(0.09f);
 
             Vector2 center = hitOrigin != null
-                ? (Vector2)hitOrigin.position
+                ? (Vector2)transform.TransformPoint(new Vector3(Mathf.Abs(hitOrigin.localPosition.x) * controller.Facing, hitOrigin.localPosition.y, 0f))
                 : (Vector2)transform.position + Vector2.right * controller.Facing * 0.9f;
             Collider2D[] hits = Physics2D.OverlapBoxAll(center, hitBox, 0f, fighterMask);
             foreach (Collider2D hit in hits)
