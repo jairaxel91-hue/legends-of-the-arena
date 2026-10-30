@@ -13,10 +13,17 @@ namespace LegendsOfTheArena.Core
         private int winsTwo;
         private bool roundEnded;
 
-        private void OnEnable()
+        private void OnEnable() => BindEvents();
+
+        private void BindEvents()
         {
             if (fighterOne != null) fighterOne.KnockedOut += OnKnockout;
             if (fighterTwo != null) fighterTwo.KnockedOut += OnKnockout;
+        }
+
+        private void UnbindEvents()
+        {
+            UnbindEvents();
         }
 
         private void OnDisable()
@@ -49,8 +56,10 @@ namespace LegendsOfTheArena.Core
 
         public void Configure(FighterHealth one, FighterHealth two)
         {
+            UnbindEvents();
             fighterOne = one;
             fighterTwo = two;
+            BindEvents();
         }
     }
 }
