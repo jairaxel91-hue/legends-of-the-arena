@@ -28,8 +28,7 @@ namespace LegendsOfTheArena.Combat
         public bool IsBlocking { get; private set; }
         public bool IsAttacking { get; private set; }
 
-        private void Awake()
-        {
+        public void ConfigurePlayerTwo(bool enabled)\n        {\n            playerTwo = enabled;\n            if (!enabled) return;\n            lightKey = KeyCode.Keypad1;\n            heavyKey = KeyCode.Keypad2;\n            blockKey = KeyCode.Keypad3;\n        }\n\n        public void SetHitOrigin(Transform origin) => hitOrigin = origin;\n        public void SetFighterMask(LayerMask mask) => fighterMask = mask;\n\n        private void Awake()\n        {
             controller = GetComponent<FighterController>();
             if (playerTwo)
             {
